@@ -196,11 +196,17 @@ void AnimationManager::Kick()
 StoryBoardInternal::~StoryBoardInternal()
 {
 	// Schedule
-	if(m_pStoryboard && m_dirty)
+	if (m_pStoryboard && m_dirty)
 	{
 		UI_ANIMATION_SECONDS secondsNow;
-		CORt(g_manager->get_IUIAnimationTimer()->GetTime(&secondsNow));
-		CORt(m_pStoryboard->Schedule(secondsNow));
+		try
+		{
+			CORt(g_manager->get_IUIAnimationTimer()->GetTime(&secondsNow));
+			CORt(m_pStoryboard->Schedule(secondsNow));
+		}
+		catch (...) {
+			std::terminate();
+		}
 	}
 
 	SafeRelease(&m_pStoryboard);
